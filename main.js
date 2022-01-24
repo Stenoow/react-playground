@@ -32,6 +32,28 @@ function LastName(props) {
 
 }
 
-const helloWorld = <h1>Hello <FirstName text={firstName}/> <LastName text={lastName}/></h1>;
+class Component {
+    Clock(props) {
+        return (
+            <div>
+                <h1>Bonjour, monde !</h1>
+                <h2>Il est {props.date.toLocaleTimeString()}.</h2>
+            </div>
+        );
+    }
 
-ReactDOM.render(helloWorld, document.querySelector('#app'));
+    tick() {
+        ReactDOM.render(
+            this.Clock(new Date()),
+            document.getElementById('app')
+        );
+    }
+}
+const component = new Component(new Date());
+setInterval(component.tick, 1000);
+
+//const helloWorld = <h1>Hello <FirstName text={firstName}/> <LastName text={lastName}/></h1>;
+
+//ReactDOM.render(helloWorld, document.querySelector('#app'));
+
+//ReactDOM.render(component.render, document.getElementById('app'));
