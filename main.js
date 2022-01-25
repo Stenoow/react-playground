@@ -55,7 +55,34 @@ function Clock(props) {
             );
 }
 
-ReactDOM.render(<Clock />, document.querySelector('#app'));
+function UserGreeting(props) {
+    return (
+        <div>
+            <h1>Bienvenue !</h1>
+            <button onClick={null}>True or False</button>
+        </div>
+    );
+}
+
+function GuestGreeting(props) {
+    return (
+        <div>
+            <h1>Veuillez vous inscrire.</h1>
+            <button onClick={null}>True or False</button>
+        </div>
+    );
+}
+
+function Greeting(props) {
+    return props.isLoggedIn ? <UserGreeting isLoggedIn={props.isLoggedIn} /> : <GuestGreeting />;
+}
+
+ReactDOM.render(
+    <Greeting isLoggedIn={true} />,
+    document.getElementById('app')
+);
+
+//ReactDOM.render(<Clock />, document.querySelector('#app'));
 
 
 
