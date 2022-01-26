@@ -287,30 +287,62 @@ function MultiForm(props) {
 
 function PokeApi(){
     const [pokeList, setPokeList] = React.useState({});
+    const [search, setSearch] = React.useState('');
 
-    const pokemon = () => {
+    React.useEffect(() => {
         fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
             .then(data => data.json())
             .then(resp => {
-                setPokeList(resp.results.map((poke) => `<article><h1>${poke.name}</h1><img src="" alt=""></article>`))
-                console.log(pokeList);
-                pokeCard();
+                setPokeList(resp.results)
             });
+    }, [])
+
+    const pokeCard = (e) => {
+        e.preventDefault();
+        let section = document.querySelector('#card');
+        let search = document.querySelector('input').value;
+        if(pokeList.length > 0 && search === ''){
+            section.innerHTML = '';
+            for(let poke of pokeList){
+                section.innerHTML += `<article><h1>${poke.name}</h1><img src="${getImages(poke.url)}" alt="image de ${poke.name}"></article>`;
+            }
+        }else if(search > 0){
+            pokeSearch();
+        }
     }
 
+    const getImages = (url) => {
+        let pokeId = url.replace( 'https://pokeapi.co/api/v2/pokemon/', '').replace('/', '');
 
-    const pokeCard = () => {
-        console.log(pokeList.length)
-        if(pokeList.length > 0){
-            document.querySelector('#card').innerHTML += pokeList
+        return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeId}.png`;
+    }
+
+    const pokeSearch = () => {
+        let search = document.querySelector('input').value;
+        let section = document.querySelector('#card');
+
+        if(search.length > 0){
+            section.innerHTML = '';
+            for(let poke of pokeList){
+                if(poke.name.indexOf(search) !== -1){
+                    section.innerHTML += `<article><h1>${poke.name}</h1><img src="${getImages(poke.url)}" alt="image de ${poke.name}"></article>`
+                }
+            }
+        }else{
+            for(let poke of pokeList){
+                document.querySelector('#card').innerHTML += poke
+            }
         }
-
     }
 
     return (
-        <section id="card">
-            <button onClick={pokemon}>clique</button>
-        </section>
+        <React.Fragment>
+            <form action="">
+                <input type="text" name="search" onChange={pokeSearch}/>
+                <button onClick={pokeCard}>clique</button>
+            </form>
+            <section id="card"></section>
+        </React.Fragment>
     );
 }
 
