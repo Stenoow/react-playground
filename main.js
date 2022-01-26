@@ -292,16 +292,17 @@ function PokeApi(){
         fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
             .then(data => data.json())
             .then(resp => {
-                setPokeList(resp.results)
+                setPokeList(resp.results.map((poke) => `<article><h1>${poke.name}</h1><img src="" alt=""></article>`))
                 console.log(pokeList);
                 pokeCard();
             });
     }
 
+
     const pokeCard = () => {
         console.log(pokeList.length)
-        for(...pokeList in poke){
-            document.querySelector('#card').innerHTML += <p>{poke.name}</p>;
+        if(pokeList.length > 0){
+            document.querySelector('#card').innerHTML += pokeList
         }
 
     }
@@ -313,4 +314,4 @@ function PokeApi(){
     );
 }
 
-ReactDOM.render(<MultiForm />, document.querySelector('#app'));
+ReactDOM.render(<PokeApi />, document.querySelector('#app'));
