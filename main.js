@@ -285,4 +285,32 @@ function MultiForm(props) {
     )
 }
 
+function PokeApi(){
+    const [pokeList, setPokeList] = React.useState({});
+
+    const pokemon = () => {
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+            .then(data => data.json())
+            .then(resp => {
+                setPokeList(resp.results)
+                console.log(pokeList);
+                pokeCard();
+            });
+    }
+
+    const pokeCard = () => {
+        console.log(pokeList.length)
+        for(...pokeList in poke){
+            document.querySelector('#card').innerHTML += <p>{poke.name}</p>;
+        }
+
+    }
+
+    return (
+        <section id="card">
+            <button onClick={pokemon}>clique</button>
+        </section>
+    );
+}
+
 ReactDOM.render(<MultiForm />, document.querySelector('#app'));
