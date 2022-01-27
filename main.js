@@ -36,7 +36,7 @@
   }
  */
 
-
+/*
 function NameForm(props) {
     const [name, setName] = React.useState('');
 
@@ -46,22 +46,22 @@ function NameForm(props) {
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         console.log(`Le nom a été soumis: ${name}`);
     }
 
 
 
-    return(
-    <form onSubmit={handleSubmit}>
-        <label>
-        Nom :
-        <input type="text" value={name} onChange={handleChange} />
-        </label>
-        <input type="submit" value="Envoyer" />
-    </form>
-);
-}
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+            Nom :
+            <input type="text" value={name} onChange={handleChange} />
+            </label>
+            <input type="submit" value="Envoyer" />
+        </form>
+    );
+}*/
 
 
 
@@ -110,7 +110,7 @@ function NameForm(props) {
       );
     }
   } */
-
+/*
 function EssayForm(props) {
     const [text, setText] = React.useState('Écrivez un essai à propos de votre élément du DOM préféré');
 
@@ -137,7 +137,7 @@ function EssayForm(props) {
 
 
   }
-
+*/
 
 
 //   ReactDOM.render(<EssayForm />, document.querySelector('#app'));
@@ -185,7 +185,7 @@ function EssayForm(props) {
       );
     }
   } */
-
+/*
 function FlavorForm(props) {
     const [value, setValue] = React.useState('coconut');
     const handleChange = (e) => {
@@ -213,24 +213,20 @@ function FlavorForm(props) {
         </form>
     );
 }
-
+*/
 
 
 //ReactDOM.render(<FlavorForm/>, document.querySelector('#app'));
 
 
 
-
+/*
 function MultiForm(props) {
     const [inputs, setInputs] = React.useState({
         name: '',
         text: '',
         value: "coconut"
     });
-
-    
-
-/*     
 
     // useCallback n'est pas forcément le meilleur choix ici
 
@@ -243,9 +239,6 @@ function MultiForm(props) {
         [inputs]
     )
 
- */
-
-    
     const handleChange = ({target: {name, value}}) => {
         setInputs(state => ({...state, [name]: value}), []);
     }
@@ -258,7 +251,7 @@ function MultiForm(props) {
     }
 
 
-    return(
+    return (
         <form onSubmit={handleSubmit}>
             <label>
                 Nom :
@@ -283,8 +276,9 @@ function MultiForm(props) {
             <input type="submit" value="Envoyer" />
         </form>
     )
-}
+}*/
 
+/*
 function PokeApi(){
     const [pokeList, setPokeList] = React.useState({});
     const [search, setSearch] = React.useState('');
@@ -294,13 +288,15 @@ function PokeApi(){
             .then(data => data.json())
             .then(resp => {
                 setPokeList(resp.results)
+                pokeCard();
             });
     }, [])
 
-    const pokeCard = (e) => {
-        e.preventDefault();
+    const pokeCard = () => {
+
         let section = document.querySelector('#card');
         let search = document.querySelector('input').value;
+        console.log(pokeList)
         if(pokeList.length > 0 && search === ''){
             section.innerHTML = '';
             for(let poke of pokeList){
@@ -329,21 +325,108 @@ function PokeApi(){
                 }
             }
         }else{
-            for(let poke of pokeList){
-                document.querySelector('#card').innerHTML += poke
-            }
+            section.innerHTML = '';
         }
     }
 
     return (
         <React.Fragment>
-            <form action="">
+            <form>
                 <input type="text" name="search" onChange={pokeSearch}/>
-                <button onClick={pokeCard}>clique</button>
+                <button onClick={pokeSearch}>clique pour une surprise</button>
             </form>
-            <section id="card"></section>
+            <section id="card">
+
+            </section>
+        </React.Fragment>
+    );
+}*/
+
+function App(){
+    const [valueDec, setValueDec] = React.useState('');
+    const [secondValue, setSecondValue] = React.useState('');
+    const [selectValue, setSelectValue] = React.useState('bin');
+
+    React.useEffect(() => {
+        if(valueDec.length > 0){
+            switch (selectValue) {
+                case 'bin':
+                    setSecondValue(parseInt(valueDec).toString(2));
+                    break;
+                case 'ter':
+                    setSecondValue(parseInt(valueDec).toString(3));
+                    break;
+                case 'sep':
+                    setSecondValue(parseInt(valueDec).toString(7));
+                    break;
+                case 'hex':
+                    setSecondValue(parseInt(valueDec).toString(16));
+                    break;
+            }
+        }
+
+    }, [valueDec])
+
+    React.useEffect(() => {
+        if(secondValue.length > 0){
+            switch (selectValue) {
+                case 'bin':
+                    setValueDec(parseInt(secondValue, 2));
+                    break;
+                case 'ter':
+                    setValueDec(parseInt(secondValue, 3));
+                    break;
+                case 'sep':
+                    setValueDec(parseInt(secondValue, 7));
+                    break;
+                case 'hex':
+                    setValueDec(parseInt(secondValue, 16));
+                    break;
+            }
+        }
+    }, [secondValue])
+
+    function handleChangeDec(e){
+        e.preventDefault();
+        setValueDec(e.target.value);
+    }
+
+    function handleChangeSecond(e){
+        e.preventDefault();
+        setSecondValue(e.target.value);
+    }
+
+    function handleSubmit(e){
+        e.preventDefault();
+        e.target.remove();
+        console.log(selectValue)
+    }
+
+    function handleChangeSelect(e){
+        setSelectValue(e.target.value);
+    }
+
+    return (
+        <React.Fragment>
+            <form action="" onSubmit={handleSubmit}>
+                <select name="value" value={selectValue} onChange={handleChangeSelect}>
+                    <option value="bin">Décimal - Binaire</option>
+                    <option value="ter">Décimal - Ternaire</option>
+                    <option value="sep">Décimal - Septénaire</option>
+                    <option value="hex">Décimal - Hexadécimal</option>
+                </select>
+                <button type="submit">changer</button>
+            </form>
+            <BaseNumberInput name="decimal" value={valueDec} handle={handleChangeDec} />
+            <br />
+            <BaseNumberInput name="setSecondValue" value={secondValue} handle={handleChangeSecond} />
         </React.Fragment>
     );
 }
 
-ReactDOM.render(<PokeApi />, document.querySelector('#app'));
+function BaseNumberInput(props){
+
+    return <input type="text" name={props.name} value={props.value} onChange={props.handle}/>
+}
+
+ReactDOM.render(<App />, document.querySelector('#app'));
