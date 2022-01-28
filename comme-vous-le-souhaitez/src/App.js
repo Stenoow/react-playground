@@ -1,18 +1,52 @@
 import logo from "./logo.svg";
 import "./App.css";
 import TodoInput from "./components/TodoInput";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function App() {
-    const [newTodo, setNewTodo] = useState('Todo');
+    const [stateInput, setStateInput] = useState('')
+    const [stateTodo, setStateTodo] = useState([{
+        id: 1,
+        title: 'ma super tâche',
+        isCompleted : false,
+        isEditing: false
+    }]);
 
-    handleInput(){
+    let newTo = {
+        id: 1,
+        title: 'ma super tâche',
+        isCompleted : false,
+        isEditing: false
+    }
+
+    const handleInput = (e) => {
+        setStateInput(e.target.value);
+        console.log(stateTodo)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setStateTodo(prevState => [
+            ...prevState,
+            {
+                id: (prevState.length + 1),
+                title: e.target[0].value,
+                isCompleted : false,
+                isEditing: false
+            }
+
+        ]);
+        console.log(e.target[0].value);
 
     }
 
+    useEffect(() => {
+        document.querySelector('#title').value = '';
+    }, [stateTodo])
+
   return (
     <div className="App">
-      <TodoInput todo={newTodo}/>
+      <TodoInput todo={stateInput} handleSubmit={handleSubmit} handleInput={handleInput} />
 
       {
 
